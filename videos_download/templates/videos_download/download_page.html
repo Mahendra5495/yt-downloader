@@ -1,4 +1,14 @@
 {% extends "videos_download/layout.html" %} 
 {% block content %}
     <h2>Download page</h2>
+    <form action="" method="post">
+        {% csrf_token %}
+        <label for="select-resolutions">chose a resolution</label>
+        <select id="select-resolutions">
+            {% for resolution in resolutions %}
+                <option value="{{ resolution }}">{{ resolution }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Download Video</button>
+    </form>
 {% endblock %}
