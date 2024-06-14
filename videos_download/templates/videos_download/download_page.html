@@ -4,12 +4,11 @@
     <form action="" method="post">
         {% csrf_token %}
         <label for="select-resolutions">chose a resolution</label>
-        <select id="select-resolutions">
+        <select id="select-resolutions" name="resolution">
             {% for video in videos %}
                 <option value="{{ video.resolution }}">{{ video.resolution }}</option>
             {% endfor %}
         </select>
-        <a href="{% url 'download' %}"><button type="submit">Download Video</button></a>
-        
+       <button type="submit">Download Video</button>
     </form>
 {% endblock %}

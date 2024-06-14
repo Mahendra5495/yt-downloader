@@ -2,7 +2,7 @@ from pytube import YouTube
 from django.conf import settings
 import os
 
-DOWNLOAD_DIR = "videos/"
+
 
 
 def fetch_videos(url):
@@ -16,17 +16,17 @@ def download_videos(videos, yt):
     video_files = []
     for stream in videos:
         file_name = f"{yt.video_id}_{stream.resolution}.mp4"
-        file_path = os.path.join(settings.MEDIA_ROOT, DOWNLOAD_DIR, file_name)
+        file_path = os.path.join(settings.MEDIA_ROOT, settings.DOWNLOAD_DIR, file_name)
 
         if not os.path.exists(file_path):
             stream.download(
-                output_path=os.path.join(settings.MEDIA_ROOT, DOWNLOAD_DIR),
+                output_path=os.path.join(settings.MEDIA_ROOT, settings.DOWNLOAD_DIR),
                 filename=file_name,
             )
         video_files.append(
             {
                 "resolution": stream.resolution,
-                "url": os.path.join(settings.MEDIA_URL, DOWNLOAD_DIR, file_name),
+                "url": os.path.join(settings.MEDIA_URL, settings.DOWNLOAD_DIR, file_name),
             }
         )
-    return video_files
+    return {"id": yt.video_id, "videos": video_files}
