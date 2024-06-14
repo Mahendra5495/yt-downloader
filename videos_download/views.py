@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 
 # from django.urls import reverse
 from .forms import YoutubeForm
-from .service import get_resolutions
+from .service import fetch_videos
 
 
 def home(request):
@@ -10,17 +10,21 @@ def home(request):
         form = YoutubeForm(request.POST)
         if form.is_valid():
             url = request.POST.get("url")
-            available_resolutions = get_resolutions(url)
-            request.session["video_url"] = url
-            request.session["resolutions"] = available_resolutions
-            return redirect(download)
+            videos = fetch_videos(url)
+
+            request.session["videos"] = videos
+            return redirect(list_videos)
 
     form = YoutubeForm()
     return render(request, "videos_download/home.html", {"form": form})
 
 
-def download(request):
+def list_videos(request):
     context = {
-        "resolutions": request.session.get("resolutions"),
+        "videos": request.session.get("videos"),
     }
     return render(request, "videos_download/download_page.html", context)
+
+
+def dowload(request, id):
+    pass
